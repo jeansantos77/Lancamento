@@ -13,6 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lancamento.API.Tests", "Lan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lancamento.API", "Lancamento.API\Lancamento.API.csproj", "{78424E42-6268-4DEF-AA89-09B4F1E4CB36}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{33B59B07-2E6C-4F2A-AAEB-482230D87D1F}"
+	ProjectSection(SolutionItems) = preProject
+		RabbitMQ\docker-compose.yml = RabbitMQ\docker-compose.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
