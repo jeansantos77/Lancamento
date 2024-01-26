@@ -10,7 +10,7 @@ namespace Lancamento.API.Infra.Data.Context
         {
         }
 
-        public DbSet<Usuario> Users { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Lacto> Lancamentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

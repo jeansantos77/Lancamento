@@ -8,7 +8,7 @@ namespace Lancamento.API.Infra.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Usuarios",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -17,7 +17,7 @@ namespace Lancamento.API.Infra.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,9 +36,9 @@ namespace Lancamento.API.Infra.Data.Migrations
                 {
                     table.PrimaryKey("PK_Lancamentos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Lancamentos_Users_UsuarioId",
+                        name: "FK_Lancamentos_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "Users",
+                        principalTable: "Usuarios",
                         principalColumn: "Id");
                 });
 
@@ -54,7 +54,7 @@ namespace Lancamento.API.Infra.Data.Migrations
                 name: "Lancamentos");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Usuarios");
         }
     }
 }

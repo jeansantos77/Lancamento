@@ -1,10 +1,10 @@
-﻿using Lancamento.API.Domain.Models;
-using System.Threading.Tasks;
+﻿using Lancamento.API.Domain.Entities;
+using Lancamento.API.Domain.Models;
 
 namespace Lancamento.API.Application.Interfaces
 {
     public interface IQueueService
     {
-        void PublishMessage(MessageQueue msgQueue);
+        void PublishMessage(IQueueMessage message);
     }
 }

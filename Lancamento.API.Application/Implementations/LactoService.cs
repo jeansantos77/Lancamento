@@ -26,34 +26,14 @@ namespace Lancamento.API.Application.Implementations
 
         public async Task Add(LactoAddModel entidade)
         {
-            string camposObrigatorios = string.Empty;
-
-            if (string.IsNullOrEmpty(entidade.Descricao))
+            if (EntidadeIsValid(entidade))
             {
-                camposObrigatorios += "Descrição deve ser informada!" + Environment.NewLine;
+                Lacto lacto = _mapper.Map<Lacto>(entidade);
+                await _lactoRepository.Add(lacto);
+
+                IQueueMessage messageLacto = GenerateMessage(entidade);
+                _queueService.PublishMessage(messageLacto);
             }
-
-            if (entidade.Valor == 0)
-            {
-                camposObrigatorios += "Valor deve ser informado!" + Environment.NewLine;
-            }
-
-            if (camposObrigatorios.Length > 0)
-            {
-                throw new Exception(camposObrigatorios);
-            }
-
-            Lacto model = _mapper.Map<Lacto>(entidade);
-            await _lactoRepository.Add(model);
-
-            MessageQueue msgQueue = new MessageQueue
-            {
-                Data = model.Data,
-                Credito = (model.Tipo == "C") ? model.Valor : 0,
-                Debito = (model.Tipo == "D") ? model.Valor : 0
-            };
-
-            _queueService.PublishMessage(msgQueue);
         }
 
         public async Task Delete(int id)
@@ -63,6 +43,9 @@ namespace Lancamento.API.Application.Implementations
             Lacto entidade = _mapper.Map<Lacto>(model);
 
             await _lactoRepository.Delete(entidade);
+
+            IQueueMessage message = GenerateMessageInvertedRecord(model);
+            _queueService.PublishMessage(message);
         }
 
         public async Task<List<LactoModel>> GetAllLancamentos()
@@ -80,13 +63,102 @@ namespace Lancamento.API.Application.Implementations
                 throw new Exception($"Lancamento com [ Id = {id}] não encontrado.");
             }
 
-            return _mapper.Map<LactoModel>(entidade);
+            LactoModel model = _mapper.Map<LactoModel>(entidade);
+
+            return model;
         }
 
         public async Task Update(LactoModel entidade)
         {
+            LactoModel lactoAnteriorModel = await GetById(entidade.Id);
+
             Lacto entity = _mapper.Map<Lacto>(entidade);
             await _lactoRepository.Update(entity);
+
+            IQueueMessage messageLactoAnterior = GenerateMessageInvertedRecord(lactoAnteriorModel);
+
+            IQueueMessage messageLactoAtual = GenerateMessage(entidade);
+
+            _queueService.PublishMessage(messageLactoAnterior);
+            _queueService.PublishMessage(messageLactoAtual);
         }
+
+        public async Task<ConsolidadoModel> GetConsolidado(DateTime data)
+        {
+            List<Lacto> lancamentos = await _lactoRepository.GetAll(t => t.Data.Date == data);
+
+            decimal saldo = 0;
+
+            foreach (Lacto item in lancamentos)
+            {
+                saldo += (item.Tipo == "C") ? item.Valor : (item.Valor * -1);
+            }
+
+            ConsolidadoModel model = new ConsolidadoModel
+            {
+                Data = data,
+                Tipo = (saldo >= 0) ? "C" : "D",
+                Valor = Math.Abs(saldo)
+            };
+
+            return model;
+        }
+
+        public async Task<ConsolidadoModel> Reprocessar(DateTime data)
+        {
+            ConsolidadoModel model = await GetConsolidado(data);
+
+            IQueueMessage message = GenerateMessage(model);
+            message.EhConsolidado = true;
+
+            _queueService.PublishMessage(message);
+
+            return model;
+        }
+
+        private static bool EntidadeIsValid(LactoAddModel entidade)
+        {
+            string camposObrigatorios = string.Empty;
+
+            if (string.IsNullOrEmpty(entidade.Descricao))
+            {
+                camposObrigatorios += "Descrição deve ser informada!" + Environment.NewLine;
+            }
+
+            if (entidade.Valor == 0)
+            {
+                camposObrigatorios += "Valor deve ser informado!";
+            }
+
+            if (camposObrigatorios.Length > 0)
+            {
+                throw new Exception(camposObrigatorios);
+            }
+
+            return true;
+        }
+
+        private static IQueueMessage GenerateMessage(ILacto lacto)
+        {
+            return new QueueMessage
+            {
+                Data = lacto.Data,
+                Tipo = lacto.Tipo,
+                Valor = lacto.Valor
+            };
+        }
+
+        private static IQueueMessage GenerateMessageInvertedRecord(ILacto lacto)
+        {
+            // inverte o lançamento para remover o saldo
+            return new QueueMessage
+            {
+                Data = lacto.Data,
+                Tipo = lacto.Tipo == "C" ? "D" : "C",
+                Valor = lacto.Valor
+            };
+        }
+
+
     }
 }

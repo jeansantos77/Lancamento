@@ -1,4 +1,5 @@
 ﻿using Lancamento.API.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,5 +13,7 @@ namespace Lancamento.API.Application.Interfaces
         Task<LactoModel> GetById(int id);
         
         Task<List<LactoModel>> GetAllLancamentos();
+        Task<ConsolidadoModel> GetConsolidado(DateTime data);
+        Task<ConsolidadoModel> Reprocessar(DateTime data);
     }
 }

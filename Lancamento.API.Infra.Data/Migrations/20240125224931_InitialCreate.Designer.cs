@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lancamento.API.Infra.Data.Migrations
 {
     [DbContext(typeof(LancamentoContext))]
-    [Migration("20240124225735_InitialCreate")]
+    [Migration("20240125224931_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,7 +68,7 @@ namespace Lancamento.API.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("Lancamento.API.Domain.Entities.Lacto", b =>

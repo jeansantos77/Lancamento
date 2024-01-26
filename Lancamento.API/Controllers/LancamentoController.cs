@@ -25,6 +25,20 @@ namespace Lancamento.API.Controllers
         }
 
         [HttpGet]
+        [Route("consolidate/{data}")]
+        public async Task<IActionResult> GetConsolidateByDate([FromRoute] DateTime data)
+        {
+            return Ok(await _lactoService.GetConsolidado(data));
+        }
+
+        [HttpPost]
+        [Route("reprocess/{data}")]
+        public async Task<IActionResult> ReprocessByDate([FromRoute] DateTime data)
+        {
+            return Ok(await _lactoService.Reprocessar(data));
+        }
+
+        [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(int id)
         {

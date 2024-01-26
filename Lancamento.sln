@@ -3,20 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lancamento.API.Application", "Lancamento.API.Application\Lancamento.API.Application.csproj", "{BB37EAB1-F82D-4D29-A903-32D93E8C4B77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lancamento.API.Application", "Lancamento.API.Application\Lancamento.API.Application.csproj", "{BB37EAB1-F82D-4D29-A903-32D93E8C4B77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lancamento.API.Domain", "Lancamento.API.Domain\Lancamento.API.Domain.csproj", "{28710A7C-7370-434F-A0B6-7998CC3EB611}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lancamento.API.Domain", "Lancamento.API.Domain\Lancamento.API.Domain.csproj", "{28710A7C-7370-434F-A0B6-7998CC3EB611}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lancamento.API.Infra.Data", "Lancamento.API.Infra.Data\Lancamento.API.Infra.Data.csproj", "{7866AD73-4A7E-49B8-AC74-337B71EBCE85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lancamento.API.Infra.Data", "Lancamento.API.Infra.Data\Lancamento.API.Infra.Data.csproj", "{7866AD73-4A7E-49B8-AC74-337B71EBCE85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lancamento.API.Tests", "Lancamento.API.Tests\Lancamento.API.Tests.csproj", "{1EC1857E-D8DF-4E83-9B0E-B40023670A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lancamento.API.Tests", "Lancamento.API.Tests\Lancamento.API.Tests.csproj", "{1EC1857E-D8DF-4E83-9B0E-B40023670A4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lancamento.API", "Lancamento.API\Lancamento.API.csproj", "{78424E42-6268-4DEF-AA89-09B4F1E4CB36}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{33B59B07-2E6C-4F2A-AAEB-482230D87D1F}"
-	ProjectSection(SolutionItems) = preProject
-		RabbitMQ\docker-compose.yml = RabbitMQ\docker-compose.yml
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lancamento.API", "Lancamento.API\Lancamento.API.csproj", "{78424E42-6268-4DEF-AA89-09B4F1E4CB36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -66,7 +66,7 @@ namespace Lancamento.API.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("Lancamento.API.Domain.Entities.Lacto", b =>
