@@ -35,7 +35,7 @@ namespace Lancamento.API.Controllers
         [Route("reprocess/{data}")]
         public async Task<IActionResult> ReprocessByDate([FromRoute] DateTime data)
         {
-            return Ok(await _lactoService.Reprocessar(data));
+            return Ok(await _lactoService.Reprocess(data));
         }
 
         [HttpGet]

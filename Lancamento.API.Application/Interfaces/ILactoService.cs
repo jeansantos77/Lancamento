@@ -14,6 +14,6 @@ namespace Lancamento.API.Application.Interfaces
         
         Task<List<LactoModel>> GetAllLancamentos();
         Task<ConsolidadoModel> GetConsolidado(DateTime data);
-        Task<ConsolidadoModel> Reprocessar(DateTime data);
+        Task<ConsolidadoModel> Reprocess(DateTime data);
     }
 }

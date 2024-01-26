@@ -87,31 +87,30 @@ namespace Lancamento.API.Application.Implementations
         {
             List<Lacto> lancamentos = await _lactoRepository.GetAll(t => t.Data.Date == data);
 
-            decimal saldo = 0;
+            decimal creditos = 0;
+            decimal debitos = 0;
 
             foreach (Lacto item in lancamentos)
             {
-                saldo += (item.Tipo == "C") ? item.Valor : (item.Valor * -1);
+                creditos += (item.Tipo == "C") ? item.Valor : 0;
+                debitos += (item.Tipo == "D") ? item.Valor : 0;
             }
 
-            ConsolidadoModel model = new ConsolidadoModel
+            ConsolidadoModel model = new()
             {
                 Data = data,
-                Tipo = (saldo >= 0) ? "C" : "D",
-                Valor = Math.Abs(saldo)
+                Creditos = creditos,
+                Debitos = debitos
             };
 
             return model;
         }
 
-        public async Task<ConsolidadoModel> Reprocessar(DateTime data)
+        public async Task<ConsolidadoModel> Reprocess(DateTime data)
         {
             ConsolidadoModel model = await GetConsolidado(data);
 
-            IQueueMessage message = GenerateMessage(model);
-            message.EhConsolidado = true;
-
-            _queueService.PublishMessage(message);
+            _queueService.PublishMessage(GenerateMessage(model));
 
             return model;
         }
@@ -138,13 +137,24 @@ namespace Lancamento.API.Application.Implementations
             return true;
         }
 
+        private static IQueueMessage GenerateMessage(ConsolidadoModel model)
+        {
+            return new QueueMessage
+            {
+                Data = model.Data,
+                Creditos = model.Creditos,
+                Debitos = model.Debitos,
+                AtualizarSaldo = true
+            };
+        }
+
         private static IQueueMessage GenerateMessage(ILacto lacto)
         {
             return new QueueMessage
             {
                 Data = lacto.Data,
-                Tipo = lacto.Tipo,
-                Valor = lacto.Valor
+                Creditos = lacto.Tipo == "C" ? lacto.Valor : 0,
+                Debitos = lacto.Tipo == "D" ? lacto.Valor : 0
             };
         }
 
@@ -154,11 +164,9 @@ namespace Lancamento.API.Application.Implementations
             return new QueueMessage
             {
                 Data = lacto.Data,
-                Tipo = lacto.Tipo == "C" ? "D" : "C",
-                Valor = lacto.Valor
+                Creditos = lacto.Tipo == "C" ? 0 : lacto.Valor,
+                Debitos = lacto.Tipo == "D" ? 0 : lacto.Valor
             };
         }
-
-
     }
 }

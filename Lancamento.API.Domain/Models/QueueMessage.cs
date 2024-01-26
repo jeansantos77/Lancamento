@@ -3,10 +3,12 @@ using System;
 
 namespace Lancamento.API.Domain.Models
 {
-    public class ConsolidadoModel: IConsolidadoModel
+    public class QueueMessage: IQueueMessage
     {
         public DateTime Data { get; set; }
         public decimal Creditos { get; set; }
         public decimal Debitos { get; set; }
+        public bool AtualizarSaldo { get; set; }
+
     }
 }

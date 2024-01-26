@@ -1,5 +1,4 @@
-﻿using Lancamento.API.Domain.Entities;
-using Lancamento.API.Domain.Models;
+﻿using Lancamento.API.Domain.Interfaces;
 
 namespace Lancamento.API.Application.Interfaces
 {

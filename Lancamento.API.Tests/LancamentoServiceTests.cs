@@ -124,13 +124,13 @@ namespace Lancamento.API.Tests
 
         }
 
-        private MessageQueue GetMessageQueue()
+        private QueueMessage GetQueueMessage()
         {
-            return new MessageQueue
+            return new QueueMessage
             {
                 Data = DateTime.Today,
-                Credito = 100,
-                Debito = 0
+                Creditos = 100,
+                Debitos = 0
             };
         }
     }

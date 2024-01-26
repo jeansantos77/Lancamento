@@ -1,6 +1,5 @@
 ﻿using Lancamento.API.Application.Interfaces;
-using Lancamento.API.Domain.Entities;
-using Lancamento.API.Domain.Models;
+using Lancamento.API.Domain.Interfaces;
 using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using System;
@@ -18,26 +17,8 @@ namespace Lancamento.API.Application.Implementations
             _queueConfig = queueConfig.Value;
         }
 
-        private MessageQueue GenerateMessageQueue(IQueueMessage message)
-        {
-            return new MessageQueue
-            {
-                Data = message.Data,
-                Credito = (message.Tipo == "C") ? message.Valor : 0,
-                Debito = (message.Tipo == "D") ? message.Valor : 0,
-                EhConsolidado = message.EhConsolidado
-            };
-        }
 
         public void PublishMessage(IQueueMessage message)
-        {
-            MessageQueue msg = GenerateMessageQueue(message);
-
-            SendMessage(msg);
-
-        }
-
-        private void SendMessage(MessageQueue msg)
         {
             var factory = new ConnectionFactory
             {
@@ -52,17 +33,17 @@ namespace Lancamento.API.Application.Implementations
                 using (var connection = factory.CreateConnection())
                 using (var channel = connection.CreateModel())
                 {
-                    channel.QueueDeclare(queue: "consolidadoQueue",
+                    channel.QueueDeclare(queue: _queueConfig.QueueName,
                                          durable: false,
                                          exclusive: false,
                                          autoDelete: false,
                                          arguments: null);
 
-                    string msgJson = JsonSerializer.Serialize(msg);
+                    string msgJson = JsonSerializer.Serialize(message);
                     var body = Encoding.UTF8.GetBytes(msgJson);
 
                     channel.BasicPublish(exchange: "",
-                                         routingKey: "consolidadoQueue",
+                                         routingKey: _queueConfig.QueueName,
                                          basicProperties: null,
                                          body: body);
                 }
@@ -71,6 +52,7 @@ namespace Lancamento.API.Application.Implementations
             {
                 throw new Exception("Erro ano conectar no RabbitMQ");
             }
+
         }
     }
 }

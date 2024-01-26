@@ -39,7 +39,7 @@ namespace Lancamento.API
             services.AddScoped<ILactoRepository, LactoRepository>();
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<ILactoService, LactoService>();
-            services.AddScoped<IQueueService, QueueService>();
+            services.AddSingleton<IQueueService, QueueService>();
             services.AddAutoMapper(typeof(AutoMappings));
 
             services.Configure<QueueConfig>(Configuration.GetSection("RabbitMQ"));
