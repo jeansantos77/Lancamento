@@ -144,7 +144,7 @@ namespace Lancamento.API.Application.Implementations
                 Data = model.Data,
                 Creditos = model.Creditos,
                 Debitos = model.Debitos,
-                AtualizarSaldo = true
+                Atualizar = false
             };
         }
 
@@ -154,7 +154,8 @@ namespace Lancamento.API.Application.Implementations
             {
                 Data = lacto.Data,
                 Creditos = lacto.Tipo == "C" ? lacto.Valor : 0,
-                Debitos = lacto.Tipo == "D" ? lacto.Valor : 0
+                Debitos = lacto.Tipo == "D" ? lacto.Valor : 0,
+                Atualizar = true
             };
         }
 
