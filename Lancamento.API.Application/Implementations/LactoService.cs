@@ -30,9 +30,6 @@ namespace Lancamento.API.Application.Implementations
             {
                 Lacto lacto = _mapper.Map<Lacto>(entidade);
                 await _lactoRepository.Add(lacto);
-
-                IQueueMessage messageLacto = GenerateMessage(entidade);
-                _queueService.PublishMessage(messageLacto);
             }
         }
 
@@ -43,9 +40,6 @@ namespace Lancamento.API.Application.Implementations
             Lacto entidade = _mapper.Map<Lacto>(model);
 
             await _lactoRepository.Delete(entidade);
-
-            IQueueMessage message = GenerateMessageInvertedRecord(model);
-            _queueService.PublishMessage(message);
         }
 
         public async Task<List<LactoModel>> GetAllLancamentos()
@@ -70,22 +64,27 @@ namespace Lancamento.API.Application.Implementations
 
         public async Task Update(LactoModel entidade)
         {
-            LactoModel lactoAnteriorModel = await GetById(entidade.Id);
+            if (await UpdateIsValid(entidade))
+            {
+                Lacto entity = _mapper.Map<Lacto>(entidade);
+                await _lactoRepository.Update(entity);
+            }
+                
+        }
 
-            Lacto entity = _mapper.Map<Lacto>(entidade);
-            await _lactoRepository.Update(entity);
+        private async Task<bool> UpdateIsValid(LactoModel entidade)
+        {
+            LactoModel lacto = await GetById(entidade.Id);
 
-            IQueueMessage messageLactoAnterior = GenerateMessageInvertedRecord(lactoAnteriorModel);
+            if (lacto.Data.Date != entidade.Data.Date)
+                throw new Exception("Campo Data não é permitido alterar.");
 
-            IQueueMessage messageLactoAtual = GenerateMessage(entidade);
-
-            _queueService.PublishMessage(messageLactoAnterior);
-            _queueService.PublishMessage(messageLactoAtual);
+            return true;
         }
 
         public async Task<ConsolidadoModel> GetConsolidado(DateTime data)
         {
-            List<Lacto> lancamentos = await _lactoRepository.GetAll(t => t.Data.Date == data);
+            List<Lacto> lancamentos = await _lactoRepository.GetAll(t => t.Data.Date == data.Date);
 
             decimal creditos = 0;
             decimal debitos = 0;
@@ -159,15 +158,5 @@ namespace Lancamento.API.Application.Implementations
             };
         }
 
-        private static IQueueMessage GenerateMessageInvertedRecord(ILacto lacto)
-        {
-            // inverte o lançamento para remover o saldo
-            return new QueueMessage
-            {
-                Data = lacto.Data,
-                Creditos = lacto.Tipo == "C" ? 0 : lacto.Valor,
-                Debitos = lacto.Tipo == "D" ? 0 : lacto.Valor
-            };
-        }
     }
 }

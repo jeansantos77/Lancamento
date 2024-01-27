@@ -64,6 +64,7 @@ namespace Lancamento.API.Controllers
             try
             {
                 await _lactoService.Add(model);
+                await _lactoService.Reprocess(model.Data);
             }
             catch (Exception ex)
             {
@@ -84,6 +85,7 @@ namespace Lancamento.API.Controllers
             try
             {
                 await _lactoService.Update(model);
+                await _lactoService.Reprocess(model.Data);
             }
             catch (Exception ex)
             {
@@ -104,7 +106,10 @@ namespace Lancamento.API.Controllers
 
             try
             {
+                DateTime date = (await _lactoService.GetById(id)).Data.Date;
+
                 await _lactoService.Delete(id);
+                await _lactoService.Reprocess(date);
             }
             catch (Exception ex)
             {
