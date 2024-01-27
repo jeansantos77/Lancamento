@@ -34,7 +34,7 @@ Além desses endpoints foram criados endpoints para criação do usuário, isso foi 
 
 # Desenho da solução:
 
-![Solução](solucao.png)
+(blob/master/Solucao.png)
 
 	- Na pasta Lancamento consta a imagem "Solução.png" mostrando como foi pensada essa solução.
 
