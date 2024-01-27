@@ -13,6 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lancamento.API.Tests", "Lan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lancamento.API", "Lancamento.API\Lancamento.API.csproj", "{78424E42-6268-4DEF-AA89-09B4F1E4CB36}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9C2C10E9-75ED-41F3-9D28-DA853D1ECF47}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.md = Readme.md
+		..\..\..\Downloads\Solução.png = ..\..\..\Downloads\Solução.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
