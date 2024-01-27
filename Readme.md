@@ -34,9 +34,7 @@ Além desses endpoints foram criados endpoints para criação do usuário, isso foi 
 
 # Desenho da solução:
 
-(blob/master/Solucao.png)
-
-	- Na pasta Lancamento consta a imagem "Solução.png" mostrando como foi pensada essa solução.
+	- Na pasta Lancamento consta a imagem "Solucao.png" mostrando como foi pensada essa solução.
 
 # Instalação:
 
