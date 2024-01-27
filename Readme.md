@@ -1,5 +1,5 @@
-EXPLICAÇÕES
------------
+# EXPLICAÇÕES
+
 Foi criado o microserviço Lancamento.API, este é responsável por expor endpoints como:
 
 	1. GET /lancamento: mostra todos os lançamentos inseridos no banco de dados
@@ -20,7 +20,7 @@ Além desses endpoints foram criados endpoints para criação do usuário, isso foi 
 	4. GET /usuario{id}: busca dados de um determinado usuário
 	5. DELETE /usuario/{id}: apaga um usuário.
 
-Como a aplicação funciona:
+# Como a aplicação funciona:
 	- O usuário através da Lancamento.API vai realizar lançamentos de debito ou crédito por dia, usando os endpoints explicado acima. Os dados serão armazenados no banco de dados dbLancamentos, 
 	uma instância SqlServer contida no container Docker, além disso, uma mensagem será publicada no RabbitMQ que está em um container Docker. Essa mensagem serve para a comunicação entre o microserviço 
 	Lancamento.API com o microserviço Consolidado.API. O serviço Consolidado.API consome essa mensagem e insere os dados no banco de dados dbConsolidados que também é uma instância SqlServer e também 
@@ -32,10 +32,12 @@ Como a aplicação funciona:
 	- Se por alguma razão ocorrer algum erro e o saldo não ficar correto, o usuário poderá reprocessar os lançamentos para aquele dia, a api vai ajustar os dados do dia e recalcular o saldo daquele 
 	dia para a frente.
 
-Desenho da solução:
+# Desenho da solução:
+
 	- Na pasta Lancamento consta a imagem "Solução.png" mostrando como foi pensada essa solução.
 
-Instalação:
+# Instalação:
+
 	- Clonar o repositório com o comando "git clone https://github.com/jeansantos77/Lancamento.git"
 	- Entrar dentro do diretório lancamento via cmd e digitar "docker-compose up" para iniciar o container
 	- Após o container estiver startado deve-se entrar no banco via Sql Management Studio e conectar no banco com usuário sa e senha "Senha@2023"
