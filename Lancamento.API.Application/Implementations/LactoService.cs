@@ -143,20 +143,7 @@ namespace Lancamento.API.Application.Implementations
                 Data = model.Data,
                 Creditos = model.Creditos,
                 Debitos = model.Debitos,
-                Atualizar = false
             };
         }
-
-        private static IQueueMessage GenerateMessage(ILacto lacto)
-        {
-            return new QueueMessage
-            {
-                Data = lacto.Data,
-                Creditos = lacto.Tipo == "C" ? lacto.Valor : 0,
-                Debitos = lacto.Tipo == "D" ? lacto.Valor : 0,
-                Atualizar = true
-            };
-        }
-
     }
 }
