@@ -51,11 +51,15 @@ Além desses endpoints foram criados endpoints para criação do usuário, isso foi 
 
 	- Na pasta Lancamento consta a imagem "Solucao.png" mostrando como foi pensada essa solução.
 
+# Evidências
+	- Na pasta Lancamento consta a imagem "Evidencias.png" mostrando a imagem da execução do endpoint que retorna todos os lançamentos.
+
 # Instalação:
 
 	- Clonar o repositório com o comando "git clone https://github.com/jeansantos77/Lancamento.git"
 	
-	- Entrar dentro do diretório lancamento via cmd e digitar "docker-compose up" para iniciar o container
+	- Entrar dentro do diretório lancamento via cmd e digitar "docker-compose up" para iniciar o container, 
+	certifique-se que o docker desktop esteja rodando
 	
 	- Após o container estiver startado deve-se entrar no banco via Sql Management Studio, informar como server name "localhost, 1450",
 	usuário "sa" e senha "Senha@2023", assim vai conseguir conectar no banco de dados do container 
